@@ -18,7 +18,7 @@ mvn install
 
 echo Generating classpath
 echo --------------------------------
-mvn dependency:build-classpath -Dmdep.outputFile=classpath.txt
+mvn dependency:build-classpath -Dmdep.outputFile=target/classpath.txt
 
 mkdir -p results
 
@@ -29,7 +29,7 @@ for i in $(seq 1 10) ; do
     echo Testing collector $collector
     java -Xmx1g \
         -Djava.library.path=$NATIVE_SO_PATH \
-        -cp $(cat classpath.txt):target/classes \
+        -cp $(cat target/classpath.txt):target/classes \
         org.cloudera.mrbenchmark.MapOutputCollectorBenchmark \
         $collector | tee results/$collector.$i.txt
   done
