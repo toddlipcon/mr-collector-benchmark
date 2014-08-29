@@ -206,17 +206,19 @@ public class MapOutputCollectorBenchmark {
   @SuppressWarnings("unchecked")
   private void collectRecords(MapOutputCollector collector)
       throws IOException, InterruptedException {
+    // Use a consistent random seed so that different implementations are
+    // sorting the exact same data.
+    XorshiftRandom r = new XorshiftRandom(1);
 
     // The 10-90 key-value split is the same as terasort.
     BytesWritable key = new BytesWritable();
     key.setSize(10);
     BytesWritable val = new BytesWritable();
     val.setSize(90);
+    r.nextBytes(val.getBytes());
+
     byte[] keyBytes = key.getBytes();
 
-    // Use a consistent random seed so that different implementations are
-    // sorting the exact same data.
-    XorshiftRandom r = new XorshiftRandom(1);
     for (int i = 0; i < NUM_RECORDS; i++) {
       int partition = i % NUM_PARTITIONS;
       r.nextBytes(keyBytes);
