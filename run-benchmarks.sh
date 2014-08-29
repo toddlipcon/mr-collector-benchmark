@@ -27,7 +27,7 @@ for i in $(seq 1 10) ; do
   for collector in $COLLECTORS_TO_BENCHMARK ; do
     sync
     echo Testing collector $collector
-    java -Xmx1g \
+    java -Xmx1g -XX:+AggressiveOpts \
         -Djava.library.path=$NATIVE_SO_PATH \
         -cp $(cat target/classpath.txt):target/classes \
         org.cloudera.mrbenchmark.MapOutputCollectorBenchmark \
