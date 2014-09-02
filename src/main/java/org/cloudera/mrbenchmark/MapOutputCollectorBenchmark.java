@@ -138,7 +138,8 @@ public class MapOutputCollectorBenchmark {
         throw new RuntimeException(e);
       }
       long utime = Long.parseLong(stat.split(" ")[13]);
-      return utime * ProcfsBasedProcessTree.JIFFY_LENGTH_IN_MILLIS;
+      long stime = Long.parseLong(stat.split(" ")[14]);
+      return (stime + utime) * ProcfsBasedProcessTree.JIFFY_LENGTH_IN_MILLIS;
     }
 
     long getWallTime() {
@@ -227,7 +228,7 @@ public class MapOutputCollectorBenchmark {
   }
   
   public void runTest(Class<? extends MapOutputCollector> collector) throws Exception {
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 30; i++) {
       // GC a few times first so we're really just testing the collection, nothing else.
       System.gc();
       System.gc();
